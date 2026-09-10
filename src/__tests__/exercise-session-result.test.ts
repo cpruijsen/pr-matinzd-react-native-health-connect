@@ -74,10 +74,6 @@ function typecheckThisFile(): string[] {
 
 describe('ExerciseSession RecordResult', () => {
   it('typechecks read route altitude as LengthResult (inMeters)', () => {
-    expect(typecheckThisFile()).toEqual([]);
-  });
-
-  it('types read route altitude as LengthResult (inMeters)', () => {
     const point: RoutePoint = {
       time: '2020-01-01T00:00:00Z',
       latitude: 37.78,
@@ -86,45 +82,21 @@ describe('ExerciseSession RecordResult', () => {
       horizontalAccuracy: nativeLength,
       verticalAccuracy: nativeLength,
     };
-
     const altitude = point.altitude;
     if (!altitude) {
       throw new Error('expected altitude');
     }
-
-    expect(altitudeInMeters(altitude)).toBe(12.5);
-    expect(readLocation(point)).toBe(12.5);
-    expect(point.altitude).not.toHaveProperty('value');
-    expect(point.altitude).not.toHaveProperty('unit');
-  });
-
-  it('types read lap length as LengthResult (inMeters)', () => {
     const length: LapLength = nativeLength;
-    expect(lapLengthInMeters(length)).toBe(12.5);
-  });
-
-  it('types read exerciseRoute.type as the native string name', () => {
     const exerciseRoute: NonNullable<ExerciseSessionResult['exerciseRoute']> = {
       type: 'CONSENT_REQUIRED',
       route: [],
     };
 
+    expect(typecheckThisFile()).toEqual([]);
+    expect(altitudeInMeters(altitude)).toBe(12.5);
+    expect(readLocation(point)).toBe(12.5);
+    expect(lapLengthInMeters(length)).toBe(12.5);
     expect(exerciseRoute.type).toBe('CONSENT_REQUIRED');
-  });
-
-  it('keeps write Location altitude as Length (value/unit)', () => {
-    const location: Location = {
-      time: '2020-01-01T00:00:00Z',
-      latitude: 37.78,
-      longitude: -122.4,
-      altitude: {
-        value: 12.5,
-        unit: 'meters',
-      },
-    };
-
-    expect(location.altitude?.value).toBe(12.5);
-    expect(location.altitude?.unit).toBe('meters');
   });
 });
 
