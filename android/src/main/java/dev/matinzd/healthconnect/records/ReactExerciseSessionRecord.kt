@@ -29,9 +29,9 @@ class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> 
           time = Instant.parse(sample.getString("time")),
           latitude = sample.getDouble("latitude"),
           longitude = sample.getDouble("longitude"),
-          horizontalAccuracy = getLengthFromJsMap(sample.getMap("horizontalAccuracy")),
-          verticalAccuracy = getLengthFromJsMap(sample.getMap("verticalAccuracy")),
-          altitude = getLengthFromJsMap(sample.getMap("altitude")),
+          horizontalAccuracy = sample.getMap("horizontalAccuracy")?.let { getLengthFromJsMap(it) },
+          verticalAccuracy = sample.getMap("verticalAccuracy")?.let { getLengthFromJsMap(it) },
+          altitude = sample.getMap("altitude")?.let { getLengthFromJsMap(it) },
         )
       } ?: emptyList()
 
