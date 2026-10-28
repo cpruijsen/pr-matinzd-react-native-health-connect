@@ -1,9 +1,11 @@
+import type { requestExerciseRoute } from '../index';
 import type { LengthResult, Location } from '../types/base.types';
 import type { RecordResult } from '../types/results.types';
 
 type ExerciseSessionResult = RecordResult<'ExerciseSession'>;
 type ExerciseRouteResult = NonNullable<ExerciseSessionResult['exerciseRoute']>;
 type ExerciseLapResult = NonNullable<ExerciseSessionResult['laps']>[number];
+type RequestedRoute = Awaited<ReturnType<typeof requestExerciseRoute>>;
 
 // The shape native `lengthToJsMap` returns (HealthConnectUtils.kt).
 const length: LengthResult = {
@@ -24,6 +26,8 @@ describe('ExerciseSession read types', () => {
           time: '2020-01-01T00:00:00Z',
           latitude: 37.78,
           longitude: -122.4,
+          horizontalAccuracy: length,
+          verticalAccuracy: length,
           altitude: length,
         },
       ],
@@ -33,9 +37,19 @@ describe('ExerciseSession read types', () => {
       endTime: '2020-01-01T00:10:00Z',
       length,
     };
+    // requestExerciseRoute resolves the same parseExerciseRoute shape
+    const requestedRoute: RequestedRoute = [
+      {
+        time: '2020-01-01T00:00:00Z',
+        latitude: 37.78,
+        longitude: -122.4,
+        altitude: length,
+      },
+    ];
 
     expect(exerciseRoute.route[0]?.altitude?.inMeters).toBe(12.5);
     expect(lap.length.inMeters).toBe(12.5);
+    expect(requestedRoute[0]?.altitude?.inMeters).toBe(12.5);
   });
 });
 
