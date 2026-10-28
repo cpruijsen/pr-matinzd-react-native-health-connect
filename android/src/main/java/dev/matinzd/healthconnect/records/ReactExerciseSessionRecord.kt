@@ -203,9 +203,9 @@ class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> 
             map.putString("time", it.time.toString())
             map.putDouble("latitude", it.latitude)
             map.putDouble("longitude", it.longitude)
-            map.putMap("horizontalAccuracy", lengthToJsMap(it.horizontalAccuracy))
-            map.putMap("verticalAccuracy", lengthToJsMap(it.verticalAccuracy))
-            map.putMap("altitude", lengthToJsMap(it.altitude))
+            it.horizontalAccuracy?.let { length -> map.putMap("horizontalAccuracy", lengthToJsMap(length)) }
+            it.verticalAccuracy?.let { length -> map.putMap("verticalAccuracy", lengthToJsMap(length)) }
+            it.altitude?.let { length -> map.putMap("altitude", lengthToJsMap(length)) }
             this.pushMap(map)
         }
       }
